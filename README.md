@@ -32,16 +32,18 @@
 
 ![](https://github.com/HYKim8/BIG_HIT/blob/main/img/wbs.jpg)
 
-## 5. 개발 아키텍처 : MVC
+## 5. 개발 아키텍처 : Spring MVC
+![image](https://terasolunaorg.github.io/guideline/1.0.1.RELEASE/en/_images/RequestLifecycle.png)
 
-![](https://github.com/HYKim8/BIG_HIT/blob/main/img/%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90.png)
+## 6. 개발 기술
+![image](https://user-images.githubusercontent.com/70499031/98215405-16e5b480-1f8b-11eb-96f5-f75c6f445c70.png)
 
-## 6. 개발 목록
+## 7. 개발 목록
 
-## 7. 단위 테스트
+## 8. 단위 테스트
 
-## 8. 통합 테스트
+## 9. 통합 테스트
 
-## 9. 이행
+## 10. 이행
 
-## 10. 개발URL
+## 11. 개발URL
