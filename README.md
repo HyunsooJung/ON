@@ -38,7 +38,9 @@
 ## 6. 개발 기술
 ![image](https://user-images.githubusercontent.com/70499031/98215405-16e5b480-1f8b-11eb-96f5-f75c6f445c70.png)
 
-## 7. 개발 목록
+## 7. 개발 산출물
+
+ [BIGHIT_ON_PPT .pptx](BIGHIT_ON_PPT .pptx) 
 
 ## 8. 단위 테스트
 
