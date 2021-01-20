@@ -40,7 +40,7 @@
 
 ## 7. 개발 산출물
 
- [BIGHIT_ON_PPT .pptx](BIGHIT_ON_PPT .pptx) 
+ [BIGHIT_ON_PPT .pptx](https://github.com/HyunsooJung/ON/blob/main/BIGHIT_ON_PPT.pptx) 
 
 ## 8. 단위 테스트
 
