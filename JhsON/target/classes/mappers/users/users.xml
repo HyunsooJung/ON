@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bighit.on.users">
+	
+	<select id="emailCheck" parameterType="UsersVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) 
+		FROM  users
+		WHERE email = #{email,jdbcType=VARCHAR}
+		AND ws_link = #{ws_link,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="pwCheck" parameterType="UsersVO" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM users
+		WHERE email = #{email,jdbcType=VARCHAR}
+		AND password = #{password,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getNowKey" resultType="string">
+		SELECT serial_key
+				FROM userserial
+				WHERE is_used = 0
+				AND ROWNUM = 1
+	</select>
+	<!-- list 조회(워크스페이스에 소속된 유저들)-->
+	<!-- com.bighit.on.users.doSelectList2 -->
+	<select id="doSelectListFromWs" parameterType="WorkSpaceVO" resultType="UsersVO">
+		SELECT *                                   
+		FROM users                                    
+		WHERE ws_link = #{wsLink,jdbcType=VARCHAR}  
+	</select>
+	
+	<!-- list 조회(채널에 소속된 유저들)-->
+	<!-- com.bighit.on.users.doSelectList -->
+	<select id="doSelectListFromCh" parameterType="channelVO" resultType="UsersVO">
+		SELECT  users.*                                    
+		FROM users                                         
+		JOIN channel_users                                 
+		ON users.user_serial = channel_users.user_serial   
+		AND channel_users.ch_link = #{chLink,jdbcType=VARCHAR}  
+	</select>
+	
+	
+	<!-- 단건조회 -->
+	<!-- com.bighit.on.users.doSelectOne -->
+	<select id="doSelectOne" parameterType="UsersVO" resultType="UsersVO">
+		SELECT                
+		    user_serial,      
+		    ws_link,          
+		    email,            
+		    password,         
+		    name,             
+		    nickname,         
+		    profile_img,      
+		    position,         
+		    phone_num,        
+		    country,          
+		    state,            
+		    online_state,     
+		    reg_id,           
+		    reg_dt,
+		    thumb            
+		FROM users            
+		WHERE user_serial = #{user_serial} 
+	</select>
+	
+	<select id="doSelectOne2"  parameterType="UsersVO" resultType="UsersVO">
+		SELECT                
+		    user_serial,      
+		    ws_link,          
+		    email,            
+		    password,         
+		    name,             
+		    nickname,         
+		    profile_img,      
+		    position,         
+		    phone_num,        
+		    country,          
+		    state,            
+		    online_state,     
+		    reg_id,           
+		    reg_dt,
+		    thumb            
+		FROM users            
+		WHERE ws_link = #{ws_link, jdbcType=VARCHAR} 
+		AND email = #{email,jdbcType=VARCHAR}
+	
+	</select>
+	
+	<!-- 수정 -->
+	<!-- com.bighit.on.users.doUpdate -->
+	<update id="doUpdate" parameterType="UsersVO">
+		UPDATE users           
+		SET  email = #{email, jdbcType=VARCHAR}        
+		    ,password = #{password, jdbcType=VARCHAR}
+		    ,name = #{name, jdbcType=VARCHAR}
+		    ,nickname = #{nickname, jdbcType=VARCHAR}
+		    ,profile_img = #{profile_img, jdbcType=VARCHAR}
+		    ,position = #{position, jdbcType=VARCHAR}
+		    ,phone_num = #{phone_num, jdbcType=VARCHAR}     
+		    ,country = #{country, jdbcType=INTEGER}       
+		    ,state = #{state, jdbcType=INTEGER}         
+		    ,online_state = #{online_state, jdbcType=INTEGER}
+		    ,thumb = #{thumb, jdbcType=VARCHAR}  
+		WHERE user_serial = #{user_serial, jdbcType=VARCHAR} 
+	</update>
+	
+	<!-- 삭제 -->
+	<!-- com.bighit.on.users.doDelete -->
+	<delete id="doDelete" parameterType="UsersVO">
+		DELETE FROM users      
+		WHERE user_serial = #{user_serial,jdbcType=VARCHAR}  
+	</delete>
+	
+	<!-- 입력 -->
+	<!-- com.bighit.on.users.doInsert -->
+	<insert id="doInsert" parameterType="UsersVO">
+		INSERT INTO users (
+		    user_serial,   
+		    ws_link,       
+		    email,         
+		    password,      
+		    name,          
+		    nickname,      
+		    profile_img,   
+		    position,      
+		    phone_num,     
+		    country,       
+		    state,         
+		    online_state,  
+		    reg_id,        
+		    reg_dt,
+		    thumb         
+		) VALUES (         
+		    (SELECT serial_key
+				FROM userserial
+				WHERE is_used = 0
+				AND ROWNUM = 1),             
+		    #{ws_link},             
+		    #{email},             
+		    #{password},             
+		    #{name},             
+		    #{nickname},          
+		    #{profile_img},             
+		    #{position},             
+		    #{phone_num},             
+		    #{country},             
+		    #{state},             
+		    #{online_state},             
+		    (SELECT serial_key
+				FROM userserial
+				WHERE is_used = 0
+				AND ROWNUM = 1),             
+		     SYSDATE,
+		     #{thumb}       
+		)                  
+	
+	</insert>
+	<update id="updateKey">
+	UPDATE userserial
+	SET
+	    is_used = 1
+	WHERE
+	    is_used = 0
+	    AND ROWNUM = 1
+	</update>
+	
+</mapper>

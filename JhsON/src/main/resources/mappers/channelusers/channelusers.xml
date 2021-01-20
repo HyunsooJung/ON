@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bighit.on.channelusers">
+
+<insert id="doInsert" parameterType="ChannelUsersVO">
+	INSERT INTO channel_users (
+     ch_link,
+     user_serial,
+     notification
+   ) VALUES (
+    #{chLink},
+    #{userSerial},
+    #{notification}
+   )
+</insert>
+<insert id="generalInsert" parameterType="UsersVO">
+	INSERT INTO channel_users (
+     ch_link,
+     user_serial,
+     notification
+   ) VALUES (
+    (SELECT ch_link
+	FROM channels
+	WHERE ws_link = #{ws_link}
+	AND ch_name  = '일반'
+   	),
+    #{user_serial},
+    1
+   )
+</insert>
+<insert id="randomInsert" parameterType="UsersVO">
+	INSERT INTO channel_users (
+     ch_link,
+     user_serial,
+     notification
+   ) VALUES (
+    (SELECT ch_link
+	FROM channels
+	WHERE ws_link = #{ws_link}
+	AND ch_name  = '랜덤'
+   	),
+    #{user_serial},
+    1
+   )
+</insert>
+<delete id="doDelete" parameterType="ChannelUsersVO">
+	DELETE FROM channel_users
+	WHERE
+    	ch_link = #{chLink}
+   		AND user_serial = #{userSerial}
+</delete>
+<delete id="doDeleteAllInChannel" parameterType="ChannelVO">
+	DELETE FROM channel_users
+	WHERE
+    	ch_link = #{chLink}
+</delete>
+<delete id="doDeleteAllInUsers" parameterType="UsersVO">
+	DELETE FROM channel_users
+	WHERE
+		user_serial = #{user_serial}
+</delete>
+<update id="doUpdate" parameterType="ChannelUsersVO">
+	UPDATE channel_users
+	SET
+	    notification = {#notification}
+	WHERE
+	    ch_link = {#chLink}
+	    AND user_serial = {userSerial} 
+</update>
+</mapper>
+ 

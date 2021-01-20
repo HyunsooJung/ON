@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bighit.on.save">
+<select id="doCheck" parameterType="SaveThrVO" resultType="int">
+	SELECT COUNT(*)
+	FROM save_thr
+	WHERE                
+	    reg_id = #{regId}       
+	    AND thr_key = #{thrKey}
+</select>
+<insert id="doInsert" parameterType="SaveThrVO">
+	INSERT INTO save_thr (   
+	    reg_id,              
+	    thr_key,             
+	    reg_dt               
+	) VALUES (               
+	    #{regId},                   
+	    #{thrKey},                   
+	    SYSDATE              
+	)						
+</insert>
+<delete id="doDelete" parameterType="SaveThrVO">
+	DELETE FROM save_thr 
+	WHERE                
+	    reg_id = #{regId}       
+	    AND thr_key = #{thrKey}
+</delete>
+<select id="doSelectList" parameterType="SaveThrVO" resultType="SaveThrVO">
+	SELECT                   
+	    thr_key as thrKey,             
+	    reg_id as regId,              
+	    reg_dt as regDt               
+	FROM                     
+	    save_thr             
+	WHERE                    
+	    reg_id = #{regId}           
+</select>
+<select id="doSelectSavedThreadList" parameterType="UsersVO" resultType="ThreadVO">
+	SELECT 
+		a.THR_KEY	 as	ThrKey	,
+		a.CH_LINK    as ChLink    ,
+		a.CONTENTS   as Contents    ,
+		a.IS_PIN     as IsPin    ,
+		a.PIN_ID     as PinId    ,
+		a.REG_ID     as RegId    ,
+		a.REG_DT     as RegDt    ,
+		a.MOD_DT     as ModDt    ,
+		a.PARENT_KEY as ParentKey    
+	FROM thread a JOIN 
+	(
+	    SELECT                   
+		    thr_key,             
+		    reg_id,              
+		    reg_dt               
+		FROM                     
+		    save_thr             
+		WHERE                    
+		    reg_id = #{user_serial}
+	) b ON a.thr_key = b.thr_key
+</select>
+</mapper>

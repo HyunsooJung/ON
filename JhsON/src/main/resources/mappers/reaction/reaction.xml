@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bighit.on.reaction">
+<select id="doCheck" parameterType="ReactionVO" resultType="int">
+	SELECT COUNT(*)
+	FROM reaction
+	WHERE 
+	    reg_id = #{regId}
+	    AND emoji = #{emoji}
+	    AND thr_key = #{thrKey}
+</select>
+<select id="doSelectListFromUsers" parameterType="UsersVO" resultType="ThreadVO">
+	SELECT 
+		a.THR_KEY	 as	ThrKey	,
+		a.CH_LINK    as ChLink    ,
+		a.CONTENTS   as Contents    ,
+		a.IS_PIN     as IsPin    ,
+		a.PIN_ID     as PinId    ,
+		a.REG_ID     as RegId    ,
+		a.REG_DT     as RegDt    ,
+		a.MOD_DT     as ModDt    ,
+		a.PARENT_KEY as ParentKey                                                     
+	FROM thread a JOIN (SELECT DISTINCT t.thr_key as thr_key 
+						FROM thread t JOIN reaction r           
+						ON  r.res_id = #{user_serial}                        
+						and r.thr_key = t.thr_key) b            
+	ON a.thr_key = b.thr_key								
+
+</select>
+
+<select id="doSelectCnt" parameterType="ReactionVO" resultType="int">
+		select count(emoji)
+		from reaction 
+		where thr_key = #{thrKey}
+</select>
+
+<select id="doSelectList" parameterType="ReactionVO" resultType="ReactionVO">
+	SELECT          
+	    emoji,      
+	    res_id as resId,     
+	    thr_key as thrKey,    
+	    reg_id as regId,     
+	    reg_dt as regDt     
+	FROM            
+	    reaction    
+	WHERE           
+	    thr_key = #{thrKey}        
+</select>
+<!--<select id="doSelectList" parameterType="UsersVO" resultType="ThreadVO">
+	SELECT *                                                 
+	FROM thread a JOIN (SELECT DISTINCT t.thr_key as thr_key 
+						FROM thread t JOIN reaction r           
+						ON  r.res_id = ?                        
+						and r.thr_key = t.thr_key) b            
+	ON a.thr_key = b.thr_key									
+
+</select>-->
+<delete id="doDelete" parameterType="ReactionVO">
+	DELETE FROM reaction 
+	WHERE                
+	    reg_id = #{regId}       
+	    AND thr_key = #{thrKey}
+	    AND emoji = #{emoji}	
+
+</delete>
+<insert id="doInsert" parameterType="ReactionVO">
+	INSERT INTO reaction (   
+	    emoji,              	
+	    thr_key,             
+	    res_id,              
+	    reg_id,              
+	    reg_dt                          
+	) VALUES (
+		#{emoji},               
+	    #{thrKey},                   
+	    #{resId},                   
+	    #{regId},                   
+	    SYSDATE             
+)						
+</insert>
+
+</mapper>

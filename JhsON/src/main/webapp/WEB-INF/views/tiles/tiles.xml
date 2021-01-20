@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC 
+"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">    
+<tiles-definitions>
+	<definition name="basede-finition" 
+	 template="/WEB-INF/views/tiles/layouts/defaultLayout.jsp">
+		<!-- header title--> 
+		<put-attribute name="title" value=""/>
+		
+		<!-- header -->
+		<!-- <put-attribute name="header" value="/WEB-INF/views/tiles/header.jsp"/>  -->
+		
+		<!-- sidebar -->
+		<put-attribute name="sidebar" value="/WEB-INF/views/tiles/sidebar.jsp"/>
+		
+		<!-- topbar -->
+		<put-attribute name="topbar" value="/WEB-INF/views/tiles/topbar.jsp"/>
+		
+		
+		<!-- body -->
+		<put-attribute name="body" value=""/>
+		
+		
+	</definition>
+	
+	
+	
+			
+				
+</tiles-definitions>
+
+
+

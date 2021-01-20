@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bighit.on.thread">
+
+   <select id="doGetNowThrKey" resultType="string">
+   	SELECT 'p'||LPAD(THREAD_SERIAL.CURRVAL+1, 19, 0)
+	FROM dual
+   </select>
+   
+   <insert id ="doInsert">
+      INSERT INTO THREAD (thr_key,ch_link,contents,reg_id,reg_dt) VALUES 
+          ('p'||LPAD(THREAD_SERIAL.NEXTVAL, 19, 0) , #{chLink}, #{contents},#{regId},SYSDATE)
+   </insert>
+   
+   <insert id = "doInsertRep" parameterType="ThreadVO">
+      INSERT INTO THREAD (thr_key,parent_key,ch_link,contents,reg_id,reg_dt) VALUES ('p'||LPAD(THREAD_SERIAL.NEXTVAL, 19, 0) , #{parentKey},#{chLink},#{contents}, #{regId}, SYSDATE)
+   </insert>
+   
+   
+   <select id ="doSelectChildList" parameterType="ThreadVO"
+   resultType = "com.bighit.on.thread.ThreadVO">
+      SELECT    thr_key AS thrKey,                                   
+                ch_link AS chLink,                                          
+                contents AS contents,                                                                                   
+                reg_id AS regId,                                           
+                TO_CHAR(reg_dt,'YYYY-MM-DD HH24MISS') AS regDt,  
+                parent_key AS parentKey,
+                TO_CHAR(mod_dt,'YYYY-MM-DD HH24MISS') AS modDt                                          
+             FROM THREAD                                       
+             WHERE parent_key = #{thrKey}
+             ORDER BY reg_dt Desc   
+   </select>
+   
+   <!-- 계층형 쿼리로 작성할 것 -->
+   <select id = "doSelectAll" 
+   resultType = "com.bighit.on.thread.ThreadVO">
+   SELECT thr_key as ThrKey,reg_id as RegId,reg_dt as RegDt,contents FROM thread 
+   </select>
+   
+   <delete id = "doDelete">
+      DELETE FROM thread WHERE thr_key = #{thrKey}
+   </delete>
+   
+   <update id="doUpdate">
+      UPDATE THREAD SET child_cnt = child_cnt+1 WHERE thr_key = #{thrKey}
+   </update>
+   
+   <update id="updateContents">
+   	  UPDATE THREAD SET contents = #{contents} WHERE thr_key = #{thrKey}
+   </update>
+   
+   <select id="doSelectListIsPinned" parameterType="ChannelVO" resultType="com.bighit.on.thread.ThreadVO">
+   		SELECT
+		    thr_key as thrKey,
+		    ch_link as chLink,
+		    contents,
+		    is_pin as isPin,
+		    pin_id as pinId,
+		    reg_id as regId,
+		    reg_dt as regDt,
+		    mod_dt as modDt,
+		    parent_key as parentKey,
+		    child_cnt as childCnt
+		FROM
+		    thread
+		Where
+		    is_pin = 1 and
+		    ch_link = #{chLink}
+   </select>
+   
+   <select id = "doSelectOne"
+   resultType = "com.bighit.on.thread.ThreadVO">
+   SELECT parent_key AS parentKey,thr_key AS thrKey,reg_id AS regId,reg_dt AS regDt,mod_dt AS modDt,contents AS contents,child_cnt AS childCnt
+    FROM thread Where thr_key = #{thrKey}   
+   </select>
+   <update id ="doPin" parameterType="ThreadVO">
+   	UPDATE thread
+	SET
+	    is_pin = #{isPin}
+	    
+	    ,pin_id = #{pinId}
+	WHERE
+	    thr_key = #{thrKey}
+   </update>
+   <select id ="doSelectListInCh" parameterType="ChannelVO" resultType="string">
+    SELECT
+	    thr_key
+	FROM
+	    thread
+	WHERE ch_link = #{chLink}	
+   </select>
+   <select id ="doSelectList" parameterType="Search" resultType ="com.bighit.on.thread.ThreadVO">
+   SELECT 
+    b.thr_key AS thrKey,
+    b.ch_link AS chLink ,
+    b.contents ,
+    b.is_pin AS isPin,
+    b.pin_id AS pinId,
+    b.reg_id AS regId,
+    b.reg_dt AS regDt,
+    b.mod_dt AS modDt,
+    b.parent_key AS parentKey,
+    b.child_cnt AS childCnt
+FROM
+    (SELECT rownum as rnum,
+        A.*
+    FROM (
+            SELECT 
+                THR_KEY ,
+                CH_LINK ,
+                CONTENTS ,
+                IS_PIN ,
+                PIN_ID ,
+                REG_ID ,
+                REG_DT ,
+                MOD_DT ,
+                PARENT_KEY ,
+                CHILD_CNT
+            FROM THREAD
+            WHERE
+                ch_link = #{searchWord}
+                AND parent_key IS NULL
+            ORDER BY reg_dt DESC
+        ) A
+        WHERE rownum <![CDATA[ <= ]]>  ( #{pageSize} * ( #{pageNum} - 1 ) + #{pageSize})
+    )B
+    WHERE rnum <![CDATA[ >= ]]> ( #{pageSize} * ( #{pageNum} - 1 ) + 1 )
+   ORDER BY rnum DESC
+   </select>
+</mapper>
+   

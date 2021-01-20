@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 데이터베이스 컬럼명 A_COLUMN을 CamelCase형태의 자바 프로퍼트로 매핑 aColumn -->
+		<setting name="mapUnderscoreToCamelCase" value="false"/>
+	</settings>
+	<typeAliases>
+		<!-- type별칭 VO이름을 간략히 사용 -->
+		<typeAlias type="com.bighit.on.reminder.ReminderVO" alias="ReminderVO" />
+		<typeAlias type="com.bighit.on.file.FileVO" alias="FileVO"/>
+		<typeAlias type="com.bighit.on.thread.ThreadVO" alias="ThreadVO"/>
+		<typeAlias type="com.bighit.on.workspace.WorkSpaceVO" alias="WorkSpaceVO"/>
+		<typeAlias type="com.bighit.on.channel.ChannelVO" alias="ChannelVO"/>
+		<typeAlias type="com.bighit.on.reaction.ReactionVO" alias="ReactionVO"/>
+		<typeAlias type="com.bighit.on.mention.MentionVO" alias="MentionVO"/>
+		<typeAlias type="com.bighit.on.save.SaveThrVO" alias="SaveThrVO"/>
+		<typeAlias type="com.bighit.on.command.CommandVO" alias="CommandVO"/>
+		<typeAlias type="com.bighit.on.command.ComChLinkVO" alias="ComChLinkVO"/>
+		<typeAlias type="com.bighit.on.user.dao.UsersVO" alias="UsersVO"/>
+		<typeAlias type="com.bighit.on.channelcommand.ChannelCommandVO" alias="ChannelCommandVO"/>
+		<typeAlias type="com.bighit.on.channelusers.ChannelUsersVO" alias="ChannelUsersVO"/>
+		<typeAlias type="com.bighit.on.cmn.Search" alias="Search"/>
+	</typeAliases>
+</configuration>
