@@ -41,11 +41,3 @@
 ## 7. 개발 산출물
 
  [BIGHIT_ON_PPT .pptx](https://github.com/HyunsooJung/ON/blob/main/BIGHIT_ON_PPT.pptx) 
-
-## 8. 단위 테스트
-
-## 9. 통합 테스트
-
-## 10. 이행
-
-## 11. 개발URL
